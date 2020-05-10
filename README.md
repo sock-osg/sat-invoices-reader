@@ -3,7 +3,7 @@ Sat invoices reader, the ones used in Mexico
 
 ## Usage
 
-Replace your source path into scripts and run them using python3
+Sources path could be a root folder with subfolders which containd plain or zipped xml files. Run following command depending of your needs.
 
 ```
 $ ./invoices-reader.py -p <sourcesPath>
