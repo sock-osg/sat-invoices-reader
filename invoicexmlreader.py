@@ -30,3 +30,6 @@ def readXml(fileName, xmlRoot):
         paidTax = deduccion.get('importe') or deduccion.get('importegravado')
 
     print(fileName, xmlRoot.get('version'), cfdiUuid.upper(), xmlRoot.get('fecha').upper(), concept.get('descripcion'), nomina.get('fechainicialpago'), nomina.get('fechafinalpago'), emisor.get('nombre').upper(), emisor.get('rfc').upper(), xmlRoot.get('subtotal'), paidTax, xmlRoot.get('total'), sep='|')
+
+def printHeaders():
+  print('archivo', 'xml version', 'cfdiUuid', 'fecha', 'descripcion', 'fechainicialpago', 'fechafinalpago', 'nombre emisor', 'rfc emisor', 'totalGravado', 'impuestoRetenido', 'saldoNeto', sep='|')

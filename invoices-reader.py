@@ -7,7 +7,7 @@ import zipfile
 from pathlib import Path
 import xml.etree.ElementTree as ET
 from decimal import Decimal
-from invoicexmlreader import readXml
+from invoicexmlreader import readXml, printHeaders
 
 def read(filename):
   xmlcontent = open(filename).read()
@@ -20,7 +20,7 @@ def read(filename):
   readXml(filename, root)
 
 def readInvoices(sourcesPath):
-  print('archivo', 'xml version', 'cfdiUuid', 'fecha', 'descripcion', 'fechainicialpago', 'fechafinalpago', 'nombre emisor', 'rfc emisor', 'totalGravado', 'impuestoRetenido', 'saldoNeto', sep=' | ')
+  printHeaders()
   for filename in Path(sourcesPath).glob('**/*.xml'):
     try:
       read(filename)
@@ -46,4 +46,4 @@ def main(argv):
   readInvoices(sourcesPath)
 
 if __name__ == "__main__":
-   main(sys.argv[1:])
+  main(sys.argv[1:])

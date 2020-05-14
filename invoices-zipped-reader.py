@@ -7,27 +7,24 @@ import zipfile
 from pathlib import Path
 import xml.etree.ElementTree as ET
 from decimal import Decimal
-from invoicexmlreader import readXml
+from invoicexmlreader import readXml, printHeaders
 
 def extract(filename):
-  #parent = os.path.abspath(os.path.join(filename, os.pardir))
-
   z = zipfile.ZipFile(filename)
   zippedFiles = z.namelist()
   zippedXmlFiles = [file for file in zippedFiles if 'xml' in file]
 
   for zippedXmlFile in zippedXmlFiles:
-    if zippedXmlFile.endswith("xml"):
-      content = io.BytesIO(z.read(zippedXmlFile))
+    content = io.BytesIO(z.read(zippedXmlFile))
 
-      contentDecoded = content.getvalue().decode('utf-8', 'ignore')
-      contentDecodedLower = contentDecoded.lower()
+    contentDecoded = content.getvalue().decode('utf-8', 'ignore')
+    contentDecodedLower = contentDecoded.lower()
 
-      root = ET.fromstring(contentDecodedLower)
-      readXml(filename, root)
+    root = ET.fromstring(contentDecodedLower)
+    readXml(filename, root)
 
 def readInvoices(sourcesPath):
-  print('archivo', 'xml version', 'cfdiUuid', 'fecha', 'descripcion', 'fechainicialpago', 'fechafinalpago', 'nombre emisor', 'rfc emisor', 'totalGravado', 'impuestoRetenido', 'saldoNeto', sep='|')
+  printHeaders()
   for filename in Path(sourcesPath).glob('**/*.zip'):
     try:
       extract(filename)
@@ -53,4 +50,4 @@ def main(argv):
   readInvoices(sourcesPath)
 
 if __name__ == "__main__":
-   main(sys.argv[1:])
+  main(sys.argv[1:])
