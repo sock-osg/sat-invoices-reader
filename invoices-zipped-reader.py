@@ -7,9 +7,9 @@ import zipfile
 from pathlib import Path
 import xml.etree.ElementTree as ET
 from decimal import Decimal
-from invoicexmlreader import readXml, printHeaders
+from invoicexmlreader import readPayrollXml, readDeductionsXml, printPayrollHeaders, printDeductionsHeaders
 
-def extract(filename):
+def extract(filename, _type):
   z = zipfile.ZipFile(filename)
   zippedFiles = z.namelist()
   zippedXmlFiles = [file for file in zippedFiles if 'xml' in file]
@@ -21,21 +21,30 @@ def extract(filename):
     contentDecodedLower = contentDecoded.lower()
 
     root = ET.fromstring(contentDecodedLower)
-    readXml(filename, root)
 
-def readInvoices(sourcesPath):
-  printHeaders()
+    if _type == 'D':
+      readDeductionsXml(filename, root)
+    else:
+      readPayrollXml(filename, root)
+
+def readInvoices(sourcesPath, _type):
+  if _type == 'D':
+    printDeductionsHeaders()
+  else:
+    printPayrollHeaders()
+
   for filename in Path(sourcesPath).glob('**/*.zip'):
     try:
-      extract(filename)
+      extract(filename, _type)
     except:
       print(sys.exc_info())
       print('Error with file ' + filename.name + ', skipping...')
 
 def main(argv):
   sourcesPath = ''
+  _type = 'P' # P ( Payroll ), D ( Deductions )
   try:
-    opts, args = getopt.getopt(argv, "hp:", ["sourcesPath="])
+    opts, args = getopt.getopt(argv, "hp:t:", ["sourcesPath=", "type="])
   except getopt.GetoptError:
     print('invoices-zipped-reader.py -p <sourcesPath>')
     sys.exit(2)
@@ -43,11 +52,14 @@ def main(argv):
     if opt == '-h':
       print('./invoices-zipped-reader.py -p <sourcesPath>\n')
       print('\t-p\tCould be a root folder with subfolders which contain xml zipped files.')
+      print('\t-t\tInvoice type, could be P(default) for payroll or D for deductions.')
       sys.exit()
-    elif opt in ("-p", "--sourcesPath"):
+    if opt in ("-p", "--sourcesPath"):
       sourcesPath = arg
+    if opt in ('-t', '--type'):
+      _type = arg
 
-  readInvoices(sourcesPath)
+  readInvoices(sourcesPath, _type)
 
 if __name__ == "__main__":
   main(sys.argv[1:])
