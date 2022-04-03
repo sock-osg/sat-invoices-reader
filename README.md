@@ -8,8 +8,12 @@ Sat invoices reader, the ones used in Mexico
 ## Description
 
 Use option -h for help.
+
+    $ main.py -h
+
+
+output:
 ```
-$ ./main.py -h
 usage: main.py [-h] -p path [-t [P,D]] [-x] [-e fileEncoding]
 
 Process to read invoce files from a specified directory (xml or zipped files)
@@ -27,11 +31,11 @@ options:
 This are an examples to execute the command:
 
     # read xml files from directory
-            ./main.py -p <sourcesPath>
+        ./main.py -p <sourcesPath>
 
     # read zipped xml files from directory
-            ./main.py -p <sourcesPath> -x
+        ./main.py -p <sourcesPath> -x
 
     # read zipped xml files from directory using encoding 'iso-8859-1'
-            ./main.py -p <sourcesPath> -e iso-8859-1 -x
+        ./main.py -p <sourcesPath> -x -e iso-8859-1
 ```
