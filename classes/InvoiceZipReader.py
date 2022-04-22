@@ -11,47 +11,46 @@ from classes.DeductionsParser import DeductionsParser
 
 class InvoiceZipReader(object):
 
-    DEF_FILE_ENCODING='utf-8'
-    fileEncoding = None
+  DEF_FILE_ENCODING = 'utf-8'
+  fileEncoding = None
 
-    def extract(self,filename, _instance):
+  def extract(self, filename, _instance):
 
-        if(self.fileEncoding == None):
-            self.fileEncoding = self.DEF_FILE_ENCODING
+    if(self.fileEncoding == None):
+      self.fileEncoding = self.DEF_FILE_ENCODING
 
-        z = zipfile.ZipFile(filename)
-        zippedFiles = z.namelist()
-        zippedXmlFiles = [file for file in zippedFiles if 'xml' in file]
+    z = zipfile.ZipFile(filename)
+    zippedFiles = z.namelist()
+    zippedXmlFiles = [file for file in zippedFiles if 'xml' in file]
 
-        for zippedXmlFile in zippedXmlFiles:
-            content = io.BytesIO(z.read(zippedXmlFile))
+    for zippedXmlFile in zippedXmlFiles:
+      content = io.BytesIO(z.read(zippedXmlFile))
 
-            contentDecoded = content.getvalue().decode(self.fileEncoding, 'ignore')
-            contentDecodedLower = contentDecoded.lower()
+      contentDecoded = content.getvalue().decode(self.fileEncoding, 'ignore')
+      contentDecodedLower = contentDecoded.lower()
 
-            file=ET.fromstring(contentDecodedLower)
-            _instance.read_file(filename,file)
+      file = ET.fromstring(contentDecodedLower)
+      _instance.read_file(filename, file)
 
-    def readInvoices(self,sourcesPath, _type):
-        print('reading zipped files')
+  def readInvoices(self, sourcesPath, _type):
+    print('reading zipped files')
+    
+    reader = None
+    if _type == 'D':
+      reader = DeductionsParser()
+    else:
+      reader = PayrollParser()
         
-        reader= None
-        if _type == 'D':
-            reader = DeductionsParser()
-        else:
-            reader = PayrollParser()
-            
-        if(reader != None):
-            self.readFiles(reader, sourcesPath)
+    if (reader != None):
+      self.readFiles(reader, sourcesPath)
 
+  def readFiles(self, _instance, sourcesPath):
 
-    def readFiles(self,_instance,sourcesPath):
+    _instance.print_headers()
 
-        _instance.print_headers()
-
-        for filename in Path(sourcesPath).glob('**/*.zip'):
-            try:
-                self.extract(filename,_instance)
-            except:
-                print(sys.exc_info())
-                print('Error with file ' + filename.name + ', skipping...')
+    for filename in sorted(Path(sourcesPath).glob('**/*.zip')):
+      try:
+        self.extract(filename, _instance)
+      except:
+        print(sys.exc_info())
+        print('Error with file ' + filename.name + ', skipping...')

@@ -9,40 +9,37 @@ from classes.DeductionsParser import DeductionsParser
 
 class InvoiceReader(object):
 
-    DEF_FILE_ENCODING='utf-8'
-    fileEncoding = None
+  DEF_FILE_ENCODING='utf-8'
+  fileEncoding = None
 
-    def read(self,filename):
+  def read(self,filename):
+    if(self.fileEncoding == None):
+      self.fileEncoding = self.DEF_FILE_ENCODING
 
-        if(self.fileEncoding == None):
-            self.fileEncoding = self.DEF_FILE_ENCODING
+    xmlcontent = open(filename,encoding=self.fileEncoding).read()
 
-        xmlcontent = open(filename,encoding=self.fileEncoding).read()
+    contentDecoded = xmlcontent
+    contentDecodedLower = contentDecoded.lower()
 
-        contentDecoded = xmlcontent
-        contentDecodedLower = contentDecoded.lower()
+    return ET.fromstring(contentDecodedLower)
 
-        return ET.fromstring(contentDecodedLower)
+  def readInvoices(self,sourcesPath, _type):
+    reader= None
+    if _type == 'D':
+      reader=DeductionsParser()
+    else:
+      reader= PayrollParser()
 
-    def readInvoices(self,sourcesPath, _type):
-        reader= None
-        if _type == 'D':
-            reader=DeductionsParser()
-        else:
-            reader= PayrollParser()
-    
-        if(reader!= None):
-            self.readFiles(reader, sourcesPath)
-        
+    if(reader!= None):
+      self.readFiles(reader, sourcesPath)      
 
-    def readFiles(self,_instance,sourcesPath):
+  def readFiles(self,_instance,sourcesPath):
+    _instance.print_headers()
 
-        _instance.print_headers()
-
-        for filename in Path(sourcesPath).glob('**/*.xml'):
-            try:
-                file=self.read(filename)
-                _instance.read_file(filename,file)
-            except:
-                print(sys.exc_info())
-                print('Error with file ' + filename.name + ', skipping...')
+    for filename in sorted(Path(sourcesPath).glob('**/*.xml')):
+      try:
+        file=self.read(filename)
+        _instance.read_file(filename,file)
+      except:
+        print(sys.exc_info())
+        print('Error with file ' + filename.name + ', skipping...')
