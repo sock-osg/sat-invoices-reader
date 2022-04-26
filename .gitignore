@@ -2,3 +2,8 @@ __pycache__/
 
 *.txt
 .vscode
+.coveralls.yml
+coverage/*
+.coverage.lcov
+lcov.info
+.pytest_cache

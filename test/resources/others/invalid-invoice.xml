@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cfdi:Comprobante xsi:schemaLocation="http://www.sat.gob.mx/cfd/3  http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd" LugarExpedicion="06600" MetodoPago="PUE" TipoDeComprobante="I" Total="0.01" Moneda="MXN" SubTotal="0.01" Certificado="MIIGAzCCA+ugAwIBAgIUMDAwMDEwMDAwMDA1MDI2NjEyMjQwDQYJKoZIhvcNAQELBQAwggGEMSAwHgYDVQQDDBdBVVRPUklEQUQgQ0VSVElGSUNBRE9SQTEuMCwGA1UECgwlU0VSVklDSU8gREUgQURNSU5JU1RSQUNJT04gVFJJQlVUQVJJQTEaMBgGA1UECwwRU0FULUlFUyBBdXRob3JpdHkxKjAoBgkqhkiG9w0BCQEWG2NvbnRhY3RvLnRlY25pY29Ac2F0LmdvYi5teDEmMCQGA1UECQwdQVYuIEhJREFMR08gNzcsIENPTC4gR1VFUlJFUk8xDjAMBgNVBBEMBTA2MzAwMQswCQYDVQQGEwJNWDEkvxO2xBB0mcARUkXzyu7ZB8RdRsPFKgWck1vxakjhOjylLRmEKbzfkOWLE+sn55QS4jrZ+zBWSue6UgjV/00E6C2k6Ne0s3eyabMj0FoD1w==" NoCertificado="000010000005313211" FormaPago="03" Sello="8AeDmfROHZgz24+Xg/wCd0qNRV56DwGw==" Fecha="2020-01-01T05:51:14" Folio="111111" Version="3.3" xmlns:cfdi="http://www.sat.gob.mx/cfd/3" xmlns:schemaLocation="http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <cfdi:Emisor Rfc="ABC111111111" Nombre="FOO S.A. de C.V." RegimenFiscal="601" />
+  <cfdi:Receptor Rfc="ABCD850101AB1" Nombre="JHON DOE" UsoCFDI="P01" />
+  <cfdi:Conceptos>
+    <cfdi:Concepto ClaveProdServ="84331123500" Cantidad="1" ClaveUnidad="E48" Unidad="Servicio" Descripcion="COMISION POR INTERMEDIACION" ValorUnitario="         0.01" Importe="         0.01" />
+  </cfdi:Conceptos>
+  <cfdi:Complemento>
+    <tfd:TimbreFiscalDigital Version="1.1" UUID="D145132123123556-DEF0-4185-98DD-D55412312314CC6" FechaTimbrado="2021-01-07T06:11:14" RfcProvCertif="INT0222123262" SelloCFD="Ia4+Xg/wCd0qNRV56DwGw==" NoCertificadoSAT="00001000000505211234" SelloSAT="oWVBtqv+zX5vnthWaCnz6kngLzuZNu8JQwJvIZ1287mFkOMeUFUOU9xbhHf5/JGfQOxuao0RVWcO8sAQV3WoIudjZNYLpoFMA==" xsi:schemaLocation="http://www.sat.gob.mx/TimbreFiscalDigital http://www.sat.gob.mx/sitio_internet/cfd/TimbreFiscalDigital/TimbreFiscalDigitalv11.xsd" xmlns:tfd="http://www.sat.gob.mx/TimbreFiscalDigital" />
+  </cfdi:Complemento>
+</cfdi:Comprobante>

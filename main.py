@@ -2,8 +2,10 @@
 
 import sys
 import argparse
-from classes.InvoiceReader import InvoiceReader
-from classes.InvoiceZipReader import InvoiceZipReader
+from classes.parser.DeductionsParser import DeductionsParser
+from classes.parser.PayrollParser import PayrollParser
+from classes.reader.InvoiceFileReader import InvoiceFileReader
+from classes.reader.TextConsoleReader import TextConsoleReader
 
 _epilog='''
 This are an examples to execute the command:\n
@@ -18,32 +20,29 @@ This are an examples to execute the command:\n
 '''
 
 def main(argv):
+        
+    parser = argparse.ArgumentParser(description='Process to read invoce files from a specified directory (xml or zipped files)',
+                                    formatter_class=argparse.RawDescriptionHelpFormatter,
+                                    epilog=_epilog)
+    parser.add_argument('-p','--sourcesPath',required=True, type=str, metavar="path"
+                        , help='Path to directory with files, the nestted directories are included in the processing.')
+    parser.add_argument('-t','--type', type=str, nargs='?',metavar='P,D', default='P'
+                        , help='Invoice type,  P for payroll (by default) or D for deductions.')
+    parser.add_argument('-x','--extract', action='store_true', help='Extract xml from zipped files.')
+    # parser.add_argument('-e','--encoding', metavar='fileEncoding', type=str, default='utf-8'
+    #                    , help=''' Set file encoding to read files, by default 'utf-8' ''')
 
-  parser = argparse.ArgumentParser(description='Process to read invoce files from a specified directory (xml or zipped files)',
-                                  formatter_class=argparse.RawDescriptionHelpFormatter,
-                                  epilog=_epilog)
-  parser.add_argument('-p','--sourcesPath',required=True, type=str, metavar="path"
-                      , help='Path to directory with files, the nestted directories are included in the processing.')
-  parser.add_argument('-t','--type', type=str, nargs='?',metavar='P,D', default='P'
-                      , help='Invoice type,  P for payroll (by default) or D for deductions.')
-  parser.add_argument('-x','--extract', action='store_true', help='Extract xml from zipped files.')
-  parser.add_argument('-e','--encoding', metavar='fileEncoding', type=str, default='utf-8'
-                      , help=''' Set file encoding to read files, by default 'utf-8' ''')
-
-  args = parser.parse_args()
-
-  reader = None
-
-  if(args.extract):
-    reader = InvoiceZipReader()
-  else:
-    reader = InvoiceReader()
-
-  reader.fileEncoding=args.encoding
-
-  print(args)
-  if(reader != None):
-    reader.readInvoices(args.sourcesPath, args.type)
+    args = parser.parse_args()
+    
+    reader = TextConsoleReader()
+    reader.setDeductuctionParser(DeductionsParser())
+    reader.setPayrollParser(PayrollParser())
+    reader.setFileReader(InvoiceFileReader())
+    
+    if(args.extract):
+        reader.file_reader.read_zipped_files(True)
+    
+    reader.read(args.sourcesPath,args.type)
 
 if __name__ == "__main__":
   main(sys.argv[1:])
