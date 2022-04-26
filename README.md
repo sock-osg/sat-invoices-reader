@@ -1,3 +1,5 @@
+![CI](https://github.com/orbital-zero/sat-invoices-reader/actions/workflows/build.yml/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/orbital-zero/sat-invoices-reader/badge.svg?branch=feature/xpath)](https://coveralls.io/github/orbital-zero/sat-invoices-reader?branch=feature/xpath)
+
 
 # sat-invoices-reader
 Sat invoices reader, the ones used in Mexico
